@@ -1,0 +1,70 @@
+/* Design tokens, fonts, reset, base typography. */
+@font-face { font-family: "Anton"; src: url(../fonts/anton.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Inter"; src: url(../fonts/inter.woff2) format("woff2"); font-weight: 400 800; font-display: swap; }
+
+:root {
+  --bg: #09090b;
+  --surface: #131316;
+  --surface-2: #1b1b20;
+  --surface-3: #25252c;
+  --line: rgba(255, 255, 255, .08);
+  --line-2: rgba(255, 255, 255, .14);
+  --text: #f5f5f4;
+  --muted: #8f8f99;
+  --faint: #5c5c66;
+
+  --volt: #d4ff3a;          /* primary energy */
+  --volt-ink: #0d1200;
+  --volt-dim: rgba(212, 255, 58, .14);
+  --fire: #ff6a2b;          /* streaks, workout B */
+  --fire-dim: rgba(255, 106, 43, .15);
+  --danger: #ff4d5e;
+
+  --wA: var(--volt);
+  --wB: var(--fire);
+
+  --display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --r-sm: 10px; --r: 16px; --r-lg: 24px;
+  --gutter: 16px;
+  --col: 520px;
+  --nav-h: 68px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+html { background: var(--bg); }
+body {
+  font-family: var(--body); color: var(--text); line-height: 1.45; font-size: 15px;
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(212, 255, 58, .07), transparent 60%),
+    var(--bg);
+  min-height: 100vh; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; padding: 0; }
+input { font: inherit; color: inherit; }
+img { display: block; }
+svg { display: block; }
+
+.hidden { display: none !important; }
+.display { font-family: var(--display); font-weight: 400; letter-spacing: .01em; text-transform: uppercase; line-height: .92; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* film grain over everything — subtle texture */
+.grain {
+  position: fixed; inset: -50%; z-index: 100; pointer-events: none; opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+#app { max-width: var(--col); margin: 0 auto; padding: 0 var(--gutter) calc(var(--nav-h) + var(--safe-b) + 24px); }
+.screen { animation: rise .35s cubic-bezier(.2, .8, .2, 1); }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

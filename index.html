@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#09090b">
+<title>Calisthenics</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Calisthenics">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/session.css">
+<link rel="stylesheet" href="css/skills.css">
+<link rel="stylesheet" href="css/progress.css">
+<link rel="stylesheet" href="css/history.css">
+<link rel="stylesheet" href="css/science.css">
+<link rel="stylesheet" href="css/equipment.css">
+<link rel="stylesheet" href="css/survey.css">
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<main id="app">
+  <section id="home" class="screen"></section>
+  <section id="skills" class="screen hidden"></section>
+  <section id="progress" class="screen hidden"></section>
+  <section id="history" class="screen hidden"></section>
+</main>
+
+<!-- Full-screen layers -->
+<section id="session" class="layer hidden"></section>
+<section id="rest" class="layer hidden"></section>
+<section id="hold" class="layer hidden"></section>
+<section id="finish" class="layer hidden"></section>
+<section id="survey" class="layer hidden"></section>
+
+<div id="sheet" class="sheet-wrap hidden"><div class="sheet" id="sheetBody"></div></div>
+
+<div id="vidOverlay" class="vid-wrap hidden">
+  <div class="vid-box">
+    <div class="vid-head"><span id="vidTitle"></span><button class="icon-btn" id="vidClose" aria-label="Close">&#10005;</button></div>
+    <div class="vid-frame"><iframe id="vidFrame" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    <a id="vidOpen" class="vid-open" target="_blank" rel="noopener">Open in YouTube &#8599;</a>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<nav id="nav">
+  <button data-screen="home" class="active">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></button>
+  <button data-screen="skills">
+    <svg viewBox="0 0 24 24"><path d="M7 2v20M17 2v20M7 6h10M7 11h10M7 16h10"/></svg><span>Skills</span></button>
+  <button data-screen="progress">
+    <svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h5v5"/></svg><span>Progress</span></button>
+  <button data-screen="history">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span>History</span></button>
+</nav>
+
+<!-- Data -->
+<script src="js/data/plan.js"></script>
+<script src="js/data/videos.js"></script>
+<script src="js/data/cues.js"></script>
+<script src="js/data/science.js"></script>
+<script src="js/data/survey.js"></script>
+<!-- Core (no DOM) -->
+<script src="js/core/util.js"></script>
+<script src="js/core/store.js"></script>
+<script src="js/core/planner.js"></script>
+<script src="js/core/stats.js"></script>
+<script src="js/core/profile.js"></script>
+<!-- UI -->
+<script src="js/ui/feedback.js"></script>
+<script src="js/ui/widgets.js"></script>
+<script src="js/ui/media.js"></script>
+<script src="js/ui/dialogs.js"></script>
+<script src="js/ui/router.js"></script>
+<script src="js/ui/home.js"></script>
+<script src="js/ui/session.js"></script>
+<script src="js/ui/rest.js"></script>
+<script src="js/ui/hold.js"></script>
+<script src="js/ui/finish.js"></script>
+<script src="js/ui/skills.js"></script>
+<script src="js/ui/progress.js"></script>
+<script src="js/ui/history.js"></script>
+<script src="js/ui/settings.js"></script>
+<script src="js/ui/science.js"></script>
+<script src="js/ui/equipment.js"></script>
+<script src="js/ui/survey.js"></script>
+<script src="js/ui/fuel.js"></script>
+<script src="js/ui/pwa.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

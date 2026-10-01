@@ -1,0 +1,39 @@
+/* Equipment picker sheet */
+.eq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.eq { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 12px 12px; min-height: 128px;
+  text-align: left; border-radius: 18px; background: var(--surface-2); border: 1px solid var(--line); transition: background .15s, border-color .15s; }
+.eq-ico svg { width: 38px; height: 38px; fill: none; stroke: var(--muted); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.eq-nm { font-weight: 800; font-size: 14px; margin-top: 4px; }
+.eq-hint { font-size: 11px; color: var(--muted); line-height: 1.35; }
+.eq-tick { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--line-2);
+  display: flex; align-items: center; justify-content: center; }
+.eq-tick svg { width: 14px; height: 14px; fill: none; stroke: transparent; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.eq.on { background: var(--volt-dim); border-color: rgba(212, 255, 58, .55); }
+.eq.on .eq-ico svg { stroke: var(--volt); }
+.eq.on .eq-tick { background: var(--volt); border-color: var(--volt); }
+.eq.on .eq-tick svg { stroke: var(--volt-ink); }
+
+.eq-preview { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 16px; }
+.eq-w { padding: 12px 14px; border-radius: 16px; background: var(--surface-2); border: 1px solid var(--line); }
+.eq-w-h { display: flex; align-items: center; gap: 8px; font-weight: 800; margin-bottom: 6px; }
+.eq-w-h .wtag { width: 22px; height: 22px; font-size: 14px; }
+.eq-row { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13px; }
+.eq-cat { color: var(--muted); white-space: nowrap; }
+.eq-ex { font-weight: 700; text-align: right; }
+.eq-row.new .eq-ex { color: var(--volt); }
+.eq-gaps { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px dashed rgba(255, 106, 43, .5); }
+.eq-gaps .eyebrow { color: var(--fire); margin-bottom: 4px; }
+.eq-gaps p { margin: 6px 0 0; font-size: 13px; color: #d4d4d8; }
+.eq-gaps.ok { border-color: rgba(212, 255, 58, .4); }
+.eq-gaps.ok .eyebrow { color: var(--volt); }
+.btn:disabled { opacity: .45; }
+
+/* entry points */
+.eq-link { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 12px;
+  background: var(--surface-2); border: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+.eq-link svg { width: 22px; height: 22px; fill: none; stroke: var(--volt); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.eq-onboard { width: 100%; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; padding: 16px; text-align: left; border-radius: var(--r-lg);
+  background: linear-gradient(130deg, rgba(212, 255, 58, .16), var(--surface) 60%); border: 1px solid rgba(212, 255, 58, .4); }
+.eq-onboard svg { width: 40px; height: 40px; flex: 0 0 auto; fill: none; stroke: var(--volt); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.eq-onboard b { display: block; font-size: 16px; }
+.eq-onboard span { font-size: 13px; color: var(--muted); }

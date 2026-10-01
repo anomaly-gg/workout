@@ -1,0 +1,55 @@
+/* Skills (ladders) screen */
+.sk-meter { margin-bottom: 18px; }
+.seg-ctl { display: flex; gap: 6px; padding: 5px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+.seg-ctl button { flex: 1; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: var(--muted); }
+.seg-ctl button .wtag { opacity: .5; width: 22px; height: 22px; font-size: 14px; }
+.seg-ctl button.on { background: var(--surface-3); color: var(--text); }
+.seg-ctl button.on .wtag { opacity: 1; }
+.sk-hint { color: var(--muted); font-size: 13px; margin: 14px 2px 16px; }
+
+.skill { border-radius: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--line); transition: box-shadow .4s; scroll-margin-top: 12px; }
+.skill.flash { box-shadow: 0 0 0 2px var(--volt), 0 0 40px -6px rgba(212, 255, 58, .6); }
+.skill-head { position: relative; height: 190px; isolation: isolate; }
+.skill-head .photo img { opacity: .6; }
+.skill-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(19, 19, 22, 0) 10%, rgba(19, 19, 22, .96) 92%); }
+.skill-head-body { position: absolute; z-index: 2; left: 16px; right: 16px; bottom: 14px; }
+.skill .eyebrow { color: var(--volt); }
+.skill.B .eyebrow { color: var(--fire); }
+.skill-name { font-size: 32px; margin-top: 4px; }
+.skill-meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.skill-meta > .display { font-size: 22px; }
+.skill-meta small { font-size: 14px; color: var(--muted); }
+
+.rungs { list-style: none; margin: 0; padding: 6px 12px 12px; }
+.rung { position: relative; }
+.rung::before { content: ""; position: absolute; left: 21px; top: 0; bottom: 0; width: 2px; background: var(--line-2); }
+.rung:first-child::before { top: 24px; }
+.rung:last-child::before { bottom: calc(100% - 24px); }
+.rung.done::before { background: var(--volt); }
+.B .rung.done::before { background: var(--fire); }
+.rung-row { position: relative; width: 100%; display: flex; align-items: center; gap: 14px; padding: 8px 6px; min-height: 48px; text-align: left; border-radius: 12px; }
+.rung-row:hover { background: rgba(255, 255, 255, .03); }
+.node { position: relative; z-index: 1; width: 30px; height: 30px; flex: 0 0 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--surface); border: 2px solid var(--line-2); color: var(--faint); font-size: 12px; }
+.node b { font-weight: 800; }
+.node svg { width: 16px; height: 16px; fill: none; stroke: var(--volt-ink); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+.rung.done .node { background: var(--volt); border-color: var(--volt); }
+.B .rung.done .node { background: var(--fire); border-color: var(--fire); }
+.B .rung.done .node svg { stroke: #1a0700; }
+.rung.cur .node { border-color: var(--volt); background: var(--bg); box-shadow: 0 0 0 4px rgba(212, 255, 58, .15), 0 0 18px rgba(212, 255, 58, .5); }
+.rung.cur .node::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--volt); }
+.B .rung.cur .node { border-color: var(--fire); box-shadow: 0 0 0 4px rgba(255, 106, 43, .15), 0 0 18px rgba(255, 106, 43, .5); }
+.B .rung.cur .node::after { background: var(--fire); }
+.rung-nm { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; }
+.rung.done .rung-nm { color: var(--muted); }
+.rung.cur .rung-nm { font-weight: 800; }
+.rung.locked .rung-nm { color: #a1a1aa; }
+.rung-next { font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+.rung-detail { margin: 0 0 8px 50px; padding: 12px 14px; border-radius: 14px; background: var(--surface-2); animation: rise .25s ease; }
+.rung-detail p { margin: 0 0 12px; color: #d4d4d8; font-size: 14px; }
+.rung-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.rung-acts .btn { height: 40px; padding: 0 14px; font-size: 13px; }
+.rung-acts .btn svg { width: 14px; height: 14px; fill: currentColor; stroke: none; }
+.rung.na .rung-nm { color: var(--faint); text-decoration: line-through; text-decoration-color: rgba(255, 255, 255, .2); }
+.rung.na .node { border-style: dashed; }
+.rung-need { font-size: 12px; color: var(--muted); align-self: center; }

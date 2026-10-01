@@ -1,0 +1,35 @@
+/* History screen + settings sheet */
+.h-month { margin: 22px 2px 10px; }
+.h-item { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+.h-item + .h-item { margin-top: 8px; }
+.h-item.open { border-color: var(--line-2); }
+.h-row { width: 100%; display: flex; align-items: center; gap: 14px; padding: 12px 16px 12px 12px; text-align: left; }
+.h-date { width: 48px; flex: 0 0 48px; text-align: center; padding: 6px 0; border-radius: 12px; background: var(--surface-2); }
+.h-date .display { font-size: 24px; display: block; }
+.h-date small { font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.h-main { flex: 1; min-width: 0; }
+.h-title { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.h-title .wtag { width: 22px; height: 22px; font-size: 14px; }
+.h-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.h-chev { font-size: 20px; color: var(--muted); }
+.h-detail { padding: 0 16px 16px; }
+.h-ex { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.h-ex b { color: #d4d4d8; font-weight: 600; white-space: nowrap; }
+.h-del { margin-top: 12px; height: 40px; font-size: 13px; }
+
+/* Settings sheet */
+.set-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--line); }
+.set-row:first-of-type { border-top: 0; }
+.set-row .lbl b { display: block; }
+.set-row .lbl small { color: var(--muted); font-size: 12px; }
+.mini-step { display: flex; align-items: center; gap: 4px; background: var(--surface-2); border-radius: 12px; padding: 4px; }
+.mini-step button { width: 36px; height: 36px; border-radius: 9px; font-size: 18px; font-weight: 700; }
+.mini-step button:active { background: var(--surface-3); }
+.mini-step span { width: 28px; text-align: center; font-family: var(--display); font-size: 22px; }
+.switch { width: 52px; height: 30px; border-radius: 99px; background: var(--surface-3); position: relative; flex: 0 0 auto; transition: background .2s; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #d4d4d8; transition: transform .2s; }
+.switch.on { background: var(--volt); }
+.switch.on::after { transform: translateX(22px); background: var(--volt-ink); }
+.data-acts { display: flex; gap: 10px; margin-top: 18px; }
+.data-acts .btn { flex: 1; }
+.set-foot { margin-top: 14px; font-size: 12px; color: var(--muted); }

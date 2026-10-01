@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Phone preview</title>
+<!-- Dev-only: renders the app in phone-sized frames. ?w=390&h=844&n=4&screen=home&step=760 -->
+<style>body{margin:0;background:#222;display:flex;gap:16px;padding:12px;align-items:flex-start;font:12px sans-serif;color:#aaa}
+iframe{border:0;border-radius:22px;background:#000;display:block}</style></head><body>
+<script>
+const q = new URLSearchParams(location.search);
+const W = +q.get("w") || 390, H = +q.get("h") || 844, N = +q.get("n") || 4, STEP = +q.get("step") || (H - 90), SCREEN = q.get("screen") || "home";
+for (let i = 0; i < N; i++) {
+  const d = document.createElement("div");
+  d.innerHTML = `${W}×${H} @${i * STEP}<iframe src="../index.html" width="${W}" height="${H}"></iframe>`;
+  document.body.appendChild(d);
+  const f = d.querySelector("iframe");
+  f.onload = () => setTimeout(() => {
+    const w = f.contentWindow;
+    if (SCREEN !== "home") w.show(SCREEN);
+    if (q.get("eval")) w.eval(q.get("eval"));
+    setTimeout(() => { const L = w.document.querySelector(".layer:not(.hidden)"); L ? (L.scrollTop = i * STEP) : w.scrollTo(0, i * STEP); }, 900);
+  }, 200);
+}
+</script></body></html>

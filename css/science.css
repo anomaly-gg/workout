@@ -1,0 +1,26 @@
+/* "The science" entry card + sheet */
+.sci-card { width: 100%; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px; text-align: left;
+  border-radius: var(--r-lg); border: 1px solid rgba(212, 255, 58, .3);
+  background: linear-gradient(130deg, rgba(212, 255, 58, .12), var(--surface) 55%); }
+.sci-card .display { font-size: 26px; margin-top: 4px; }
+.sci-card .eyebrow { color: var(--volt); }
+.sci-card-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.sci-card > svg { width: 24px; height: 24px; flex: 0 0 auto; fill: none; stroke: var(--volt); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+.sci-list { display: flex; flex-direction: column; gap: 10px; }
+.sci { display: flex; gap: 12px; padding: 14px; border-radius: 18px; background: var(--surface-2); border: 1px solid var(--line); }
+.sci-n { font-size: 22px; color: var(--volt); width: 28px; flex: 0 0 28px; }
+.sci-body { min-width: 0; }
+.sci h4 { margin: 0 0 6px; font-size: 15px; }
+.sci .sci-find { margin: 0 0 10px; font-size: 13px; color: #c9c9cf; }
+.sci-app { font-size: 13px; padding: 10px 12px; border-radius: 12px; background: var(--volt-dim); color: var(--text); }
+.sci-app .eyebrow { display: block; color: var(--volt); margin-bottom: 3px; font-size: 10px; }
+.sci-src { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--muted); text-decoration: none; overflow-wrap: anywhere; }
+.sci-src:hover { color: var(--volt); }
+.sci-caveat { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--line-2); font-size: 13px; color: var(--muted); }
+
+/* per-set effort coaching inside the workout cue card */
+.s-effort { display: flex; gap: 8px; align-items: flex-start; margin-top: 8px; font-size: 13px; color: var(--volt); }
+.s-cue > .s-effort:first-child { margin-top: 0; }
+.s-effort svg { width: 14px; height: 14px; flex: 0 0 14px; margin-top: 3px; fill: currentColor; }
+.B .s-effort { color: var(--fire); }
