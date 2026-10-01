@@ -27,6 +27,8 @@ def main():
     h = hashlib.sha256()
     for f in files:
         h.update(f.encode()); h.update(open(f, "rb").read())
+    # the worker's own logic counts too (minus the two stamped lines)
+    h.update(re.sub(r'^const (VERSION|FILES) = .*$', "", open("sw.js", encoding="utf-8").read(), flags=re.M).encode())
     version = "v-" + h.hexdigest()[:12]
 
     sw = open("sw.js", encoding="utf-8").read()
