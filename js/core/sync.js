@@ -45,6 +45,7 @@ function applyDoc(d) {
 
 let syncRunning = null, syncAgain = false, syncTimer = null;
 let onSyncApplied = () => {};   // UI re-render hook (js/ui/sync.js)
+let onSyncLinked = () => {};    // reminders re-register with the new code (js/ui/reminders.js)
 
 async function api(path, opts = {}) {
   const r = await fetch(SYNC_URL + path, { cache: "no-store", ...opts, headers: { "Content-Type": "application/json" } });
@@ -96,6 +97,7 @@ async function createSyncSpace() {
   if (r.status !== 201) throw new Error("Couldn't create a sync code (" + r.status + ").");
   sync.id = r.body.id; saveSync();
   await syncNow();
+  onSyncLinked();
 }
 async function joinSyncSpace(code) {
   const id = normalizeCode(code);
@@ -105,5 +107,6 @@ async function joinSyncSpace(code) {
   if (r.status !== 200) throw new Error("Sync server error (" + r.status + ").");
   sync.id = id; saveSync();
   await syncNow();
+  onSyncLinked();
 }
 function leaveSync() { sync = { id: null, last: 0, error: null }; saveSync(); }

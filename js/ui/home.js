@@ -135,6 +135,7 @@ function renderHome() {
     </button>
   `;
 
+  saveReminderText();
   $("#startBtn").onclick = () => startWorkout(w);
   $("#swapBtn").onclick = () => startWorkout(other);
   $("#settingsBtn").onclick = openSettings;

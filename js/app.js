@@ -12,3 +12,4 @@ document.addEventListener("pointerdown", unlockAudio, { once: true });
 show("home");
 if (session) openSession();   // resume a workout interrupted by refresh / closed tab
 startSync();
+startReminders();

@@ -2,7 +2,16 @@ name = "workout-sync"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 
+# Training-day reminders check who's due every 5 minutes.
+[triggers]
+crons = ["*/5 * * * *"]
+
 [[d1_databases]]
 binding = "DB"
 database_name = "workout-sync"
 database_id = "0503c41a-6981-4289-b9bd-a2afec746311"
+
+# Web Push (VAPID). The private key is a secret: `wrangler secret put VAPID_PRIVATE_JWK`.
+[vars]
+VAPID_PUBLIC = "BDGkjtBlnJuIz0hYu1WMAwDShm7-Km8NjDzBOT_7AlpwU-PSXnAkwOw2eul2_8tEqGFtCTlazh4_5sAgVf8P3_4"
+VAPID_SUBJECT = "https://anomaly-gg.github.io/workout/"

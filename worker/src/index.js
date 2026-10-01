@@ -1,7 +1,12 @@
+import { sendPush, runReminders } from "./push.js";
+
 /* Workout sync — a dumb versioned document store. Merging happens on the devices.
    POST /v1/spaces          → { id }              create a sync space (id = secret sync code)
    GET  /v1/spaces/:id      → { doc, ver }        404 if unknown
-   PUT  /v1/spaces/:id      { doc, ver } → { ver }  409 { doc, ver } if someone wrote first */
+   PUT  /v1/spaces/:id      { doc, ver } → { ver }  409 { doc, ver } if someone wrote first
+   POST /v1/push            { endpoint, days, minute, tz, syncId? }  save a device's reminder schedule
+   POST /v1/push/remove     { endpoint }                             stop reminders for a device
+   POST /v1/push/test       { endpoint } → { status }                send one now */
 
 const ORIGINS = new Set([
   "https://anomaly-gg.github.io",
@@ -31,7 +36,36 @@ function newId() {
   return [...bytes].map(b => ALPHABET[b & 31]).join("");   // 20 chars × 5 bits = 100 bits
 }
 
+async function readJson(req) {
+  const text = await req.text();
+  if (text.length > 10_000) return null;
+  try { return JSON.parse(text); } catch { return null; }
+}
+const validEndpoint = e => typeof e === "string" && e.length < 2000 && /^https:\/\//.test(e);
+function validTz(tz) { try { new Intl.DateTimeFormat("en-US", { timeZone: tz }); return typeof tz === "string"; } catch { return false; } }
+
+async function pushRoutes(req, env, path) {
+  const b = await readJson(req);
+  if (!b || !validEndpoint(b.endpoint)) return json(req, { error: "bad endpoint" }, 400);
+  if (path === "/v1/push/remove") {
+    await env.DB.prepare("DELETE FROM push_subs WHERE endpoint = ?").bind(b.endpoint).run();
+    return json(req, { ok: true });
+  }
+  if (path === "/v1/push/test") return json(req, { status: await sendPush(env, b.endpoint).catch(() => 0) });
+  const days = Array.isArray(b.days) ? [...new Set(b.days.filter(d => Number.isInteger(d) && d >= 0 && d <= 6))].sort() : [];
+  if (!days.length || !Number.isInteger(b.minute) || b.minute < 0 || b.minute > 1439 || !validTz(b.tz)) return json(req, { error: "bad schedule" }, 400);
+  const syncId = typeof b.syncId === "string" && ID_RE.test(b.syncId) ? b.syncId : null;
+  await env.DB.prepare(`INSERT INTO push_subs (endpoint, days, minute, tz, sync_id, last_sent, created) VALUES (?, ?, ?, ?, ?, NULL, ?)
+    ON CONFLICT(endpoint) DO UPDATE SET days = excluded.days, minute = excluded.minute, tz = excluded.tz, sync_id = excluded.sync_id`)
+    .bind(b.endpoint, days.join(","), b.minute, b.tz, syncId, Date.now()).run();
+  return json(req, { ok: true });
+}
+
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runReminders(env));
+  },
+
   async fetch(req, env) {
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(req) });
     const url = new URL(req.url);
@@ -42,6 +76,8 @@ export default {
       await env.DB.prepare("INSERT INTO spaces (id, doc, ver, created, updated) VALUES (?, '{}', 0, ?, ?)").bind(id, now, now).run();
       return json(req, { id }, 201);
     }
+
+    if (req.method === "POST" && /^\/v1\/push(\/remove|\/test)?$/.test(url.pathname)) return pushRoutes(req, env, url.pathname);
 
     const m = url.pathname.match(/^\/v1\/spaces\/([^/]+)$/);
     if (!m) return json(req, { error: "not found" }, 404);
