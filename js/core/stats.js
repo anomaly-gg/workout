@@ -11,7 +11,7 @@ const bestOf   = e => Math.max(0, ...doneSets(e).map(s => num(s.r)));
 /* Most recent logged entry for an exercise (optionally only sessions before `beforeTs`). */
 function lastEntry(key, beforeTs = Infinity) {
   for (let i = history.length - 1; i >= 0; i--) {
-    if (history[i].started >= beforeTs) continue;
+    if (history[i].started >= beforeTs || history[i].deload) continue;
     const e = (history[i].entries || []).find(x => x.key === key);
     if (e && doneSets(e).length) return e;
   }
@@ -22,7 +22,7 @@ function lastEntry(key, beforeTs = Infinity) {
 function bestAtLevel(key, level, beforeTs = Infinity) {
   let best = 0;
   history.forEach(h => {
-    if (h.started >= beforeTs) return;
+    if (h.started >= beforeTs || h.deload) return;
     (h.entries || []).forEach(e => { if (e.key === key && (e.level ?? 0) === level) best = Math.max(best, bestOf(e)); });
   });
   return best;
@@ -30,6 +30,7 @@ function bestAtLevel(key, level, beforeTs = Infinity) {
 
 /* Coaching line for an exercise: { text, tone: "up"|"new"|"push"|"own", ready, aim } */
 function suggest(ex) {
+  if (deloadActive()) return { text: "Deload — easy reps", tone: "own", ready: false, aim: ex.lo };
   const lv = lvlOf(ex.key), last = lastEntry(ex.key);
   if (!last) return { text: "First time — aim " + ex.lo, tone: "new", ready: false, aim: ex.lo };
   const done = doneSets(last), best = bestOf(last);
@@ -42,7 +43,7 @@ function suggest(ex) {
   const aim = clamp(best + 1, ex.lo, ex.hi);
   return { text: "Beat " + best + " → " + aim, tone: "push", ready: false, aim };
 }
-const readyToLevel = () => ALL_EX.filter(e => suggest(e).ready);
+const readyToLevel = () => deloadActive() ? [] : ALL_EX.filter(e => suggest(e).ready);
 
 /* ---- Session totals ---- */
 const sessionReps  = h => (h.entries || []).reduce((s, e) => e.type === "timed" ? s : s + doneSets(e).reduce((a, st) => a + num(st.r), 0), 0);
@@ -51,7 +52,7 @@ const sessionSets  = h => (h.entries || []).reduce((s, e) => s + doneSets(e).len
 const sessionMs    = h => h.ended ? h.ended - h.started : 0;
 
 function estMinutes(w) {
-  const secs = PLAN[w].exercises.reduce((s, e) => s + e.sets * (40 + e.rest), 0);
+  const secs = PLAN[w].exercises.reduce((s, e) => s + (deloadActive() ? deloadSets(e.sets) : e.sets) * (40 + e.rest), 0);
   return Math.round(secs / 60 / 5) * 5;
 }
 

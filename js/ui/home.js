@@ -13,7 +13,7 @@ function headline() {
 function renderHome() {
   const w = nextWorkout(), other = w === "A" ? "B" : "A";
   const plan = PLAN[w], [h1, h2] = headline();
-  const sets = plan.exercises.reduce((s, e) => s + e.sets, 0);
+  const sets = plan.exercises.reduce((s, e) => s + (deloadActive() ? deloadSets(e.sets) : e.sets), 0);
   const rk = rank(), st = weekStreak(), ready = readyToLevel();
   const weekCount = sessionsInWeek(Date.now()), goal = settings.weeklyGoal;
   const today = startOfDay(Date.now()), wk = startOfWeek(Date.now());
@@ -32,6 +32,7 @@ function renderHome() {
     <h1 class="display home-h1">${esc(h1)}</h1>
     <p class="home-sub">${esc(h2)}${ready.length ? ` <b class="volt-txt">${ready.length} level-up${ready.length > 1 ? "s" : ""} waiting.</b>` : ""}</p>
     ${resume}
+    ${deloadCardHtml()}
     ${!settings.profile ? `
       <button class="eq-onboard" id="svOnboard">${ICON.bolt}
         <div><b>Personalise your plan</b><span>1-minute survey: goal, equipment, a quick strength check, and calorie &amp; protein targets.</span></div>
@@ -42,7 +43,7 @@ function renderHome() {
       <div class="hero-shade"></div>
       <div class="hero-letter display" aria-hidden="true">${w}</div>
       <div class="hero-body">
-        <div class="eyebrow hero-eyebrow">Next up · Session ${history.length + 1}</div>
+        <div class="eyebrow hero-eyebrow">${deloadActive() ? `Deload week · day ${deloadDay()} of ${DELOAD_DAYS}` : `Next up · Session ${history.length + 1}`}</div>
         <div class="display hero-title">Workout ${w}</div>
         <div class="hero-meta"><span>${plan.exercises.length} moves</span><span>${sets} sets</span><span>~${estMinutes(w)} min</span></div>
         <ol class="hero-moves">
@@ -136,6 +137,7 @@ function renderHome() {
   `;
 
   saveReminderText();
+  wireDeloadCard();
   $("#startBtn").onclick = () => startWorkout(w);
   $("#swapBtn").onclick = () => startWorkout(other);
   $("#settingsBtn").onclick = openSettings;

@@ -9,6 +9,7 @@ document.addEventListener("keydown", e => {
 });
 document.addEventListener("pointerdown", unlockAudio, { once: true });
 
+settleDeload();
 show("home");
 if (session) openSession();   // resume a workout interrupted by refresh / closed tab
 startSync();

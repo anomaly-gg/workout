@@ -96,3 +96,14 @@
 .warm p { padding-left: 18px; }
 .warm li + li { margin-top: 6px; }
 .warm:first-of-type { margin-top: 28px; }
+
+/* Deload card */
+.dl-card { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; padding: 16px; border-radius: var(--r-lg);
+  background: linear-gradient(130deg, rgba(120, 170, 255, .14), var(--surface) 60%); border: 1px solid rgba(120, 170, 255, .35); }
+.dl-ico svg { width: 30px; height: 30px; fill: none; stroke: #9cc0ff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.dl-txt { flex: 1; min-width: 0; }
+.dl-txt .eyebrow { color: #9cc0ff; }
+.dl-txt b { display: block; font-size: 16px; margin-top: 4px; }
+.dl-txt span { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.dl-acts { display: flex; gap: 8px; margin-top: 12px; }
+.dl-acts .btn { height: 40px; padding: 0 14px; font-size: 13px; }

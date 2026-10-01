@@ -5,6 +5,8 @@ function openSettings() {
     <h3>Settings</h3>
     ${installPrompt && !isInstalled() ? `<div class="set-row"><div class="lbl"><b>Install app</b><small>Home-screen icon, full screen, works offline</small></div>
       <button class="btn volt" id="instBtn" style="height:40px">Install</button></div>` : ""}
+    <div class="set-row"><div class="lbl"><b>Deload week</b><small>${deloadActive() ? `On — day ${deloadDay()} of ${DELOAD_DAYS}` : "A lighter week to shed fatigue"}</small></div>
+      <button class="btn" id="dlBtn" style="height:40px">${deloadActive() ? "End early" : "Start"}</button></div>
     <div class="set-row"><div class="lbl"><b>Reminders</b><small>${esc(reminderStatusText())}</small></div>
       <button class="btn" id="remOpen" style="height:40px">${reminderCfg().on ? "Edit" : "Set up"}</button></div>
     <div class="set-row"><div class="lbl"><b>Sync</b><small>${esc(syncStatusText())}</small></div>
@@ -34,6 +36,7 @@ function openSettings() {
       settings[b.dataset.sw] = !settings[b.dataset.sw]; saveSettings(); b.classList.toggle("on", settings[b.dataset.sw]);
     });
     if ($("#instBtn")) $("#instBtn").onclick = () => { closeSheet(); promptInstall(); };
+    $("#dlBtn").onclick = () => { deloadActive() ? endDeload() : startDeload(); closeSheet(); show("home"); toast(deloadActive() ? "Deload week started — easy sessions" : "Back to full training"); };
     $("#remOpen").onclick = () => { closeSheet(); openReminders(); };
     $("#syOpen").onclick = () => { closeSheet(); openSync(); };
     $("#svOpen").onclick = () => { closeSheet(); openSurvey(); };

@@ -74,6 +74,26 @@ check(pr("row", { pull: 2 }) === 2, "5–11 pull-ups → feet-elevated rows (cha
 check(pr("dip", { push: 0 }) === 0, "0 push-ups → bench dips");
 check(T(`buildPlan(settings.equipment, 2).plan.A.exercises.every(e => e.sets === 2)`), "25-min option = 2 sets");
 
+// 6. Deload weeks.
+run("js/core/stats.js"); run("js/core/deload.js");
+T(`settings.equipment = ["bar", "dips", "chair"]; applyEquipment(); levels = { pushup: 2 }; settings.deload = undefined;`);
+const W = 7 * 864e5, t0 = Date.now() - 10 * W;
+const sess = (t, extra = "") => `{ workout: "A", started: ${t}, ended: ${t + 1}, ${extra} entries: [{ key: "pushup", name: "Push-ups", level: 2, type: "reps", sets: [{ r: "15", done: true }, { r: "15", done: true }, { r: "15", done: true }] }] }`;
+T(`history = [${[0, 1, 2, 3, 4].map(i => sess(t0 + i * W)).join(",")}];`);
+check(T("deloadDue()") === false, "5 trained weeks → no deload suggested yet");
+T(`history.push(${sess(t0 + 5 * W)});`);
+check(T("deloadDue()") === true, "6 trained weeks → deload suggested");
+check(T("readyToLevel().length") === 1, "pushup maxed (15s) → level-up ready before deload");
+T("snoozeDeload()");
+check(T("deloadDue()") === false, "Not now → snoozed for a week");
+T("settings.deload.snooze = 0; startDeload()");
+check(T("deloadActive()") && T("readyToLevel().length") === 0 && T(`suggest(exDef("pushup")).tone`) === "own", "during deload: no level-up pressure, easy coaching");
+check(T("deloadSets(3)") === 2 && T("deloadSets(2)") === 1 && T("deloadSets(1)") === 1, "sets cut by about a third (3→2, 2→1, never 0)");
+T(`history.push(${sess(Date.now() - 1000, 'deload: true,').replace(/"15"/g, '"8"')});`);
+check(T(`lastEntry("pushup").sets[0].r`) === "15", "deload sessions don't become next session's targets");
+T("settings.deload.active.end = Date.now() - 1; settleDeload()");
+check(!T("deloadActive()") && T("deloadDue()") === false && T("readyToLevel().length") === 1, "expired deload closes itself; counter restarts; level-up readiness returns");
+
 const sample = eq => { const p = T(`buildPlan(${JSON.stringify(eq)})`); return ["A", "B"].map(w => w + ": " + p.plan[w].exercises.map(e => e.key).join(", ")).join("\n   ") + (p.gaps.length ? "\n   gaps: " + p.gaps.length : ""); };
 console.log("default  →", sample(["bar", "dips", "chair"]));
 console.log("nothing  →", sample([]));

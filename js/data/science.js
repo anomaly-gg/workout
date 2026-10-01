@@ -64,6 +64,13 @@ const SCIENCE = [
     url: "https://bjsm.bmj.com/content/53/21/1362",
   },
   {
+    title: "Plan lighter weeks — don't stop",
+    finding: "Coaches typically schedule a 5–7 day lighter week every 4–6 weeks, cutting sets and reps while keeping their usual training days (expert consensus). The only randomized trial found a full week off didn't boost muscle growth and slightly reduced leg strength. The evidence here is mostly expert practice — treat it as a guide.",
+    app: "After 6 weeks of training the app suggests a deload: same sessions, about a third fewer sets, sets stopped 3–4 reps short of failure, no level-up pressure. You can also start one any time from Settings.",
+    src: "Bell et al., Sports Med Open 2023 · Coleman et al., PeerJ 2024",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10809978/",
+  },
+  {
     title: "Eat enough protein to grow",
     finding: "A meta-analysis of 49 trials found protein boosted gains from resistance training, with no further muscle gain above about 1.6 g per kg of body weight per day.",
     app: "Not tracked here. A practical target is about 1.6 g/kg/day, e.g. ~110 g for a 70 kg person.",

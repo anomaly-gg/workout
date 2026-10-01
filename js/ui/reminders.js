@@ -18,7 +18,7 @@ function saveReminderText() {
   if (!IS_HOSTED || !("caches" in window)) return;
   const w = nextWorkout(), ready = readyToLevel();
   const left = settings.weeklyGoal - sessionsInWeek(Date.now());
-  const body = ready.length
+  const body = deloadActive() ? "Deload week — an easy session today. Leave feeling fresh." : ready.length
     ? `${curName(ready[0].key)} → ${ready[0].levels[nextRung(ready[0].key)]} is ready. Go climb.`
     : `${left > 0 ? `${left} more to hit this week's goal · ` : ""}~${estMinutes(w)} min. Every rung counts.`;
   caches.open("wo-reminder")

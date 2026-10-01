@@ -6,11 +6,11 @@ function startWorkout(w) {
   unlockAudio();
   if (session) return openSession();
   session = {
-    workout: w, started: Date.now(), idx: 0,
+    workout: w, started: Date.now(), idx: 0, deload: deloadActive(),
     entries: PLAN[w].exercises.map(ex => {
       const aim = String(suggest(ex).aim);
       return { key: ex.key, level: lvlOf(ex.key), name: curName(ex.key), type: ex.type,
-        sets: Array.from({ length: ex.sets }, () => ({ r: aim, done: false })) };
+        sets: Array.from({ length: deloadActive() ? deloadSets(ex.sets) : ex.sets }, () => ({ r: aim, done: false })) };
     }),
   };
   saveSession();
@@ -54,7 +54,7 @@ function renderSession(keepScroll = false) {
   <div class="s-wrap ${w}">
     <div class="s-top">
       <button class="icon-btn" id="sExit" aria-label="Exit">${ICON.close}</button>
-      <div class="s-clock"><div class="eyebrow">Workout ${w}</div><div class="display tnum" id="sElapsed">${fmtClock((Date.now() - session.started) / 1000)}</div></div>
+      <div class="s-clock"><div class="eyebrow">Workout ${w}${session.deload ? " · Deload" : ""}</div><div class="display tnum" id="sElapsed">${fmtClock((Date.now() - session.started) / 1000)}</div></div>
       <button class="btn s-finish-top" id="sFinishTop">Finish</button>
     </div>
     <div class="s-segs">
@@ -72,7 +72,7 @@ function renderSession(keepScroll = false) {
         <div class="eyebrow s-eyebrow">${session.idx + 1} / ${total} · ${esc(ex.cat)}</div>
         <div class="display s-title">${esc(en.name)}</div>
         <div class="s-chips">
-          <span class="chip">${ex.sets} × ${target}</span>
+          <span class="chip">${en.sets.length} × ${target}</span>
           <span class="chip ${sg.tone}">${esc(sg.text)}</span>
         </div>
       </div>
@@ -80,7 +80,7 @@ function renderSession(keepScroll = false) {
 
     <div class="s-cue">
       ${CUES[en.name] ? `<span class="eyebrow">Form</span>${esc(CUES[en.name])}` : ""}
-      <div class="s-effort">${ICON.bolt}<span>${timed ? "Hold until your form starts to slip, not past it." : "Stop each set with 1–3 clean reps left. Full range, every rep."}</span></div>
+      <div class="s-effort">${ICON.bolt}<span>${session.deload ? "Deload week: stop 3–4 reps short of failure. Leave feeling fresh." : timed ? "Hold until your form starts to slip, not past it." : "Stop each set with 1–3 clean reps left. Full range, every rep."}</span></div>
     </div>
 
     <div class="s-ladder">
@@ -234,7 +234,7 @@ async function confirmFinish() {
 
 function finishWorkout() {
   const entry = {
-    workout: session.workout, started: session.started, ended: Date.now(),
+    workout: session.workout, started: session.started, ended: Date.now(), ...(session.deload ? { deload: true } : {}),
     entries: session.entries.map(e => ({ key: e.key, name: e.name, level: e.level, type: e.type, sets: e.sets.filter(s => s.done) }))
       .filter(e => e.sets.length),
   };
