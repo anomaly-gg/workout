@@ -1,5 +1,7 @@
 /* Bodyweight UI: log sheet, Home weigh-in prompt, Progress chart + pace check. Stored in kg; shown in the survey's units. */
-const weightImperial = () => (settings.profile && settings.profile.body && settings.profile.body.units) === "imperial";
+/* Display unit: the swap button in the log sheet sets settings.weightUnit; otherwise follow the survey's units. */
+const weightImperial = () => settings.weightUnit ? settings.weightUnit === "lb"
+  : (settings.profile && settings.profile.body && settings.profile.body.units) === "imperial";
 const fmtWeight = kg => weightImperial() ? (kgToLb(kg)).toFixed(1) + " lb" : kg.toFixed(1) + " kg";
 const toShown = kg => weightImperial() ? kgToLb(kg) : kg;
 const fromShown = v => weightImperial() ? lbToKg(v) : v;
@@ -25,14 +27,14 @@ function openWeightLog() {
 
 function renderWeightLog() {
   const box = $("#wBody"); if (!box) return;
-  const unit = weightImperial() ? "lb" : "kg", step = weightImperial() ? 0.2 : 0.1;
+  const unit = weightImperial() ? "lb" : "kg", other = weightImperial() ? "kg" : "lb", step = weightImperial() ? 0.2 : 0.1;
   const recent = weightEntries().slice(-7).reverse();
   box.innerHTML = `
     <h3>Log weight</h3>
     <p>Weigh in the morning, after the bathroom and before eating — same conditions every day. Single days bounce 1–2 kg; the 7-day average is what counts.</p>
     <div class="w-entry">
       <button class="icon-btn" data-w="-1" aria-label="Less">${ICON.minus}</button>
-      <span class="w-unit" aria-hidden="true"></span>
+      <button class="w-unit w-swap" id="wSwap" aria-label="Switch to ${other}">${other}</button>
       <label><input type="number" inputmode="decimal" step="${step}" id="wInput" value="${wDraft.toFixed(1)}" aria-label="Weight in ${unit}"></label>
       <span class="w-unit">${unit}</span>
       <button class="icon-btn" data-w="1" aria-label="More">${ICON.plus}</button>
@@ -46,6 +48,12 @@ function renderWeightLog() {
     $("#wInput").value = wDraft.toFixed(1); tick();
   });
   $("#wInput").oninput = e => { wDraft = num(e.target.value); };
+  $("#wSwap").onclick = () => {
+    const kg = fromShown(num($("#wInput").value));
+    settings.weightUnit = other; saveSettings(); tick();
+    wDraft = Math.round(toShown(kg) * 10) / 10;
+    renderWeightLog();
+  };
   $("#wInput").onfocus = e => e.target.select();
   $("#wSave").onclick = () => {
     const kg = fromShown(num($("#wInput").value));

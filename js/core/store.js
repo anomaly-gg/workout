@@ -18,7 +18,7 @@ let session  = load(LS.session, null);
 let meta     = Object.assign({ levelsAt: {}, settingsAt: 0, deleted: [] }, load(LS.meta, {}));
 
 /* Settings that follow you across devices; sound/vibration/wake-lock stay per device. */
-const SYNCED_SETTINGS = ["weeklyGoal", "sets", "equipment", "equipmentChosen", "profile", "deload"];
+const SYNCED_SETTINGS = ["weeklyGoal", "sets", "equipment", "equipmentChosen", "profile", "deload", "weightUnit"];
 const syncedSettings = () => Object.fromEntries(SYNCED_SETTINGS.filter(k => settings[k] !== undefined).map(k => [k, settings[k]]));
 let syncedSnap = JSON.stringify(syncedSettings());
 
