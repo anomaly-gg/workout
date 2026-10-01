@@ -8,13 +8,15 @@
 
 .w-entry { display: flex; align-items: center; gap: 10px; }
 .w-entry .icon-btn { width: 56px; height: 56px; border-radius: 16px; }
-.w-entry label { flex: 1; display: flex; align-items: baseline; justify-content: center; gap: 6px; height: 72px; border-radius: 18px;
-  background: var(--surface-2); border: 1px solid var(--line); padding-top: 14px; }
+.w-entry label { flex: 1; display: flex; align-items: center; justify-content: center; height: 72px; border-radius: 18px;
+  background: var(--surface-2); border: 1px solid var(--line); }
+/* No baseline alignment: Chrome gives <input> a device-dependent baseline. Center the number, pin the unit to its foot. */
+.w-num { display: inline-flex; align-items: flex-end; gap: 6px; }
 .w-entry input { field-sizing: content; width: 4.2ch; min-width: 2ch; max-width: 6ch; background: none; border: 0; text-align: center;
   font-family: var(--display); font-size: 44px; line-height: 1; color: var(--text); padding: 0; -moz-appearance: textfield; }
 .w-entry input:focus { outline: none; color: var(--volt); }
 .w-entry input::-webkit-outer-spin-button, .w-entry input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.w-entry label span { font-size: 14px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+.w-num span { line-height: 1; margin-bottom: 12px; font-size: 14px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
 .w-recent { margin-top: 18px; }
 .w-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
 .w-row span { flex: 1; color: var(--muted); }
