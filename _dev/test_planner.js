@@ -14,6 +14,9 @@ const check = (ok, msg) => { if (!ok) { fails++; console.log("FAIL:", msg); } };
 const old = fs.readFileSync(path.join(root, "_backup/index.v1.html"), "utf8");
 const oldPlan = vm.runInNewContext("(" + old.slice(old.indexOf("const PLAN = {") + 13, old.indexOf("};", old.indexOf("const PLAN = {")) + 1) + ")");
 const def = T("buildPlan(EQUIP_DEFAULT).plan");
+// The one deliberate addition since the original plan: hamstring curls in Workout A, right after squats.
+check(def.A.exercises[4] && def.A.exercises[4].key === "legcurl", "Workout A has the hamstring-curl slot after squats");
+def.A.exercises = def.A.exercises.filter(e => e.key !== "legcurl");
 ["A", "B"].forEach(w => {
   check(def[w].exercises.length === oldPlan[w].exercises.length, `default ${w} exercise count`);
   oldPlan[w].exercises.forEach((o, i) => {

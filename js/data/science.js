@@ -31,7 +31,7 @@ const SCIENCE = [
   {
     title: "Volume adds up: aim for ~10 sets per muscle per week",
     finding: "A meta-analysis found a dose-response relationship between weekly sets and muscle growth, with 10+ sets per muscle per week trending best in the available data.",
-    app: "Over a week your pulling and pushing muscles each get about 12–15 hard sets; quads about 9.",
+    app: "Over a week your pulling and pushing muscles each get about 12–15 hard sets; quads about 9; hamstrings about 9–12 (leg curls on A days, bridges → Nordics on B days).",
     src: "Schoenfeld, Ogborn & Krieger, J Sports Sci, 2017",
     url: "https://researchgate.net/profile/Brad-Schoenfeld/publication/305455324_Dose-response_relationship_between_weekly_resistance_training_volume_and_increases_in_muscle_mass_A_systematic_review_and_meta-analysis/links/59dc0269458515e9ab4527d6/Dose-response-relationship-between-weekly-resistance-training-volume-and-increases-in-muscle-mass-A-systematic-review-and-meta-analysis.pdf",
   },
@@ -80,4 +80,4 @@ const SCIENCE = [
 ];
 
 /* Known limit of this plan — shown so it isn't oversold. */
-const SCIENCE_CAVEAT = "Honest limit: hamstrings get the least direct work (one move, Workout B only). Squats, lunges and bridges help, but it's below the ~10 sets/week mark.";
+const SCIENCE_CAVEAT = "Honest limit: there's no direct calf work. Squat jumps and single-leg moves train them a little — add calf raises if bigger calves matter to you.";

@@ -34,7 +34,7 @@ function closeSession() {
   scheduleSync();  // sync pauses during a workout
 }
 
-const curEx = () => PLAN[session.workout].exercises[session.idx];
+const curEx = () => exDef(curEntry().key);   // by key: a resumed session survives plan changes
 const curEntry = () => session.entries[session.idx];
 const entryDone = e => e.sets.every(s => s.done);
 
@@ -47,7 +47,6 @@ function renderSession(keepScroll = false) {
   const firstOpen = en.sets.findIndex(s => !s.done);
   const target = timed ? `${ex.lo}–${ex.hi}s` : `${ex.lo}–${ex.hi} reps`;
   const lastSets = last && last.level === lv ? doneSets(last) : [];
-  const nextEx = !isLast ? PLAN[w].exercises[session.idx + 1] : null;
   const allDone = session.entries.every(entryDone);
 
   layer.innerHTML = `
@@ -199,7 +198,7 @@ function afterSetDone() {
 function restContext(exerciseDone, nextIdx) {
   if (exerciseDone && nextIdx >= 0) {
     const e = session.entries[nextIdx];
-    return { label: "Next exercise", name: e.name, sub: `${e.sets.length} sets · ${PLAN[session.workout].exercises[nextIdx].cat}` };
+    return { label: "Next exercise", name: e.name, sub: `${e.sets.length} sets · ${(exDef(e.key) || {}).cat || ""}` };
   }
   const en = curEntry(), n = en.sets.findIndex(s => !s.done);
   return { label: `Set ${n + 1} of ${en.sets.length}`, name: en.name, sub: "Same again — chase that number" };

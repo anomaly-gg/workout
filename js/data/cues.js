@@ -63,6 +63,11 @@ const CUES = {
   "Hollow Hold (arms overhead)":"Same shape, arms by your ears — longer lever, harder.",
   "Hollow Rocks":"Hold the hollow shape and rock gently head-to-toe.",
   "Extended Hollow Rocks":"Fully extended rock — keep your low back down.",
+  // hamstring curl ladder (added 2026-10-01) — towel on a smooth floor, or socks on tiles
+  "Sliding Leg Curl Negatives (3s out)":"On your back, heels on a towel, hips lifted; slide your heels out for 3 seconds, drop hips, reset.",
+  "Sliding Leg Curls":"Hips up, heels on the towel; slide your heels out and pull them back in without letting your hips sag.",
+  "Single-leg Sliding Leg Curl Negatives":"One heel on the towel, other leg raised; hips up, slide out slowly for 3 seconds.",
+  "Single-leg Sliding Leg Curls":"One heel on the towel, hips high and level; slide out and curl back in on one leg.",
   // equipment-generator variations (added 2026-10-01)
   "Ring Pull-up Negatives (5s down)":"Start at the top with chin over the rings; lower for a slow 5-count.",
   "Band-Assisted Ring Pull-ups":"Band looped over the ring straps under a knee or foot; pull chest to hands.",

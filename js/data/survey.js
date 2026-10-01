@@ -36,7 +36,7 @@ const START_RUNG = {
   pullup: ["pull", [0, 1, 2, 3]], chinup: ["pull", [0, 1, 2, 3]], ring_pullup: ["pull", [0, 1, 2, 3]],
   ring_chinup: ["pull", [0, 0, 1, 2]], row: ["pull", [0, 1, 2, 3]], ring_row: ["pull", [0, 1, 2, 3]],
   hlr: ["core", [0, 1, 2, 3]], floor_flex: ["core", [0, 1, 2, 3]], plank: ["core", [0, 1, 2, 3]], hollow: ["core", [0, 0, 1, 2]],
-  squat: ["legs", [0, 1, 2]], lunge: ["legs", [0, 0, 1]], hamstring: ["legs", [0, 0, 1]],
+  squat: ["legs", [0, 1, 2]], lunge: ["legs", [0, 0, 1]], hamstring: ["legs", [0, 0, 1]], legcurl: ["legs", [0, 0, 1]],
 };
 
 const GOAL_FOCUS = {

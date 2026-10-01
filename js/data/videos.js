@@ -64,6 +64,11 @@ const VIDEOS = {
   "Nordic Curl Negatives":"LWfqK8-w1J4",
   "Assisted Nordic Curls":"LWfqK8-w1J4",
   "Nordic Curls":"LWfqK8-w1J4",
+  // hamstring curl ladder — oEmbed-checked 2026-10-01
+  "Sliding Leg Curl Negatives (3s out)":"w1Ud8QYtYYU",     // Eccentric Slider Leg Curls
+  "Sliding Leg Curls":"cWSsWpuxmYM",                      // Towel Hamstring Curls
+  "Single-leg Sliding Leg Curl Negatives":"SMFU0g0ml_0",  // Eccentric Only Single Leg Hamstring Curl with Slider
+  "Single-leg Sliding Leg Curls":"OI6DZ4CERyU",           // Single Leg Hamstring Curl With Slider
   // equipment-generator variations — oEmbed-checked 2026-10-01 (exists, embeddable, title matches)
   "Ring Pull-up Negatives (5s down)":"Qsg6EP4Va4I",
   "Band-Assisted Ring Pull-ups":"4yE-XGDWJPg",

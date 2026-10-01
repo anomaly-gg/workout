@@ -2,7 +2,8 @@
    The plan = 12 movement-pattern SLOTS. Each slot lists candidate ladders in priority order; the generator picks the
    first one your equipment allows (and whose key isn't already used). A rung written as ["Name", "need"] needs that
    equipment ("a|b" = either one); rungs you can't do are skipped when climbing.
-   With EQUIP_DEFAULT the generator reproduces the original hand-built plan exactly (same keys → history carries over).
+   With EQUIP_DEFAULT the generator reproduces the original hand-built plan (same keys → history carries over),
+   plus the hamstring-curl slot added to Workout A on 2026-10-01.
    type: "reps" = log reps · "timed" = log seconds. */
 
 const EQUIPMENT = [
@@ -34,6 +35,9 @@ const SLOTS = {
     ]},
     { cat: "Legs · Knee", type: "reps", sets: 3, lo: 8, hi: 15, rest: 90, options: [
       { key: "squat", levels: ["Bodyweight Squats", "Tempo Squats (3s down)", "Squat Jumps", "Split Squats", ["Bulgarian Split Squats", "chair"], "Pistol Squats"] },
+    ]},
+    { cat: "Legs · Hamstrings", type: "reps", sets: 3, lo: 6, hi: 12, rest: 90, options: [
+      { key: "legcurl", levels: ["Sliding Leg Curl Negatives (3s out)", "Sliding Leg Curls", "Single-leg Sliding Leg Curl Negatives", "Single-leg Sliding Leg Curls"] },
     ]},
     { cat: "Core · Flexion", type: "reps", sets: 3, lo: 6, hi: 15, rest: 75, options: [
       { key: "hlr", needs: "bar|rings", levels: ["Lying Leg Raises", "Hanging Knee Tucks", "Hanging Knee Raises", "Hanging Leg Raises", "Toes-to-Bar"] },
