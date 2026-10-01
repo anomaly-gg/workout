@@ -8,12 +8,17 @@ function openSurvey() {
   sv = {
     goal: p.goal, days: p.days ?? settings.weeklyGoal, sets: p.sets ?? (settings.sets || 3),
     equip: [...settings.equipment], placement: { ...(p.placement || {}) },
-    body: { units: "metric", sex: "m", ...(p.body || {}) }, activity: p.activity, skipBody: false,
+    body: prefillLoggedWeight({ units: "metric", sex: "m", ...(p.body || {}) }), activity: p.activity, skipBody: false,
     applyRungs: !history.length,
   };
   svStep = 0;
   showLayer("survey", true);
   renderSurvey();
+}
+function prefillLoggedWeight(b) {
+  const kg = currentWeightKg();
+  if (kg) { b.kg = String(Math.round(kg * 10) / 10); b.lb = String(Math.round(kgToLb(kg) * 10) / 10); }
+  return b;
 }
 function closeSurvey() { showLayer("survey", false); show("home"); }
 
@@ -197,7 +202,14 @@ function myNutrition() {
   const p = settings.profile;
   if (!p || !p.body) return null;
   const b = p.body, imp = b.units === "imperial";
+  const logged = currentWeightKg();
   const body = { sex: b.sex, age: num(b.age), activity: p.activity,
-    heightCm: imp ? ftInToCm(num(b.ft), num(b.inch)) : num(b.cm), weightKg: imp ? lbToKg(num(b.lb)) : num(b.kg) };
-  return nutritionTargets(body, p.goal);
+    heightCm: imp ? ftInToCm(num(b.ft), num(b.inch)) : num(b.cm), weightKg: logged || (imp ? lbToKg(num(b.lb)) : num(b.kg)) };
+  const n = nutritionTargets(body, p.goal);
+  if (n && n.kcal) {
+    n.adjust = p.kcalAdjust || 0;
+    n.kcal = Math.max(n.kcal + n.adjust, n.bmr);
+    n.weightKg = body.weightKg; n.weightFromLog = !!logged;
+  }
+  return n;
 }

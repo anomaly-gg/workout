@@ -94,6 +94,25 @@ check(T(`lastEntry("pushup").sets[0].r`) === "15", "deload sessions don't become
 T("settings.deload.active.end = Date.now() - 1; settleDeload()");
 check(!T("deloadActive()") && T("deloadDue()") === false && T("readyToLevel().length") === 1, "expired deload closes itself; counter restarts; level-up readiness returns");
 
+// 7. Bodyweight log.
+run("js/core/weights.js");
+const D1 = 864e5, now0 = Date.now();
+T(`weights = {}; [${[...Array(14)].map((_, i) => i).join(",")}].forEach(i => logWeight(i < 7 ? 79.2 : 80, ${now0} - i * ${D1}));`);
+check(Math.abs(T("weekAvg(0)") - 79.2) < 1e-9 && Math.abs(T("weekAvg(7)") - 80) < 1e-9, "7-day averages: this week vs last week");
+let pc = T(`paceCheck("lose")`);
+check(pc.status === "ok" && Math.abs(pc.pct + 1) < 0.01, "−1%/week while cutting → on track");
+check(T(`paceCheck("muscle")`).status === "slow" && T(`paceCheck("muscle")`).fix === 150, "losing while trying to gain → add 150 kcal");
+T(`weights = {}; [${[...Array(14)].map((_, i) => i).join(",")}].forEach(i => logWeight(80, ${now0} - i * ${D1}));`);
+check(T(`paceCheck("lose")`).status === "slow" && T(`paceCheck("lose")`).fix === -150, "flat weight while cutting → trim 150 kcal");
+T(`weights = {}; logWeight(80, ${now0}); logWeight(81, ${now0});`);
+check(T("weightEntries().length") === 1 && T("weightEntries()[0].kg") === 81, "one entry per day; re-logging replaces it");
+check(T("weekAvg(0)") === null && T("currentWeightKg()") === 81, "fewer than 3 weigh-ins → no average, latest entry used");
+T(`deleteWeight(dayKey(${now0}))`);
+check(T("weightEntries().length") === 0 && T("currentWeightKg()") === null, "deleted entries disappear");
+const wa = { "2026-09-01": { kg: 80, at: 1 }, "2026-09-02": { kg: 79.8, at: 5 } }, wb = { "2026-09-02": { kg: null, at: 9 }, "2026-09-03": { kg: 79.5, at: 3 } };
+const wm = T(`mergeWeights(${JSON.stringify(wa)}, ${JSON.stringify(wb)})`);
+check(Object.keys(wm).length === 3 && wm["2026-09-02"].kg === null, "merge: newest change per day wins, deletions stick");
+
 const sample = eq => { const p = T(`buildPlan(${JSON.stringify(eq)})`); return ["A", "B"].map(w => w + ": " + p.plan[w].exercises.map(e => e.key).join(", ")).join("\n   ") + (p.gaps.length ? "\n   gaps: " + p.gaps.length : ""); };
 console.log("default  →", sample(["bar", "dips", "chair"]));
 console.log("nothing  →", sample([]));

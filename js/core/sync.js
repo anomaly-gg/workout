@@ -10,7 +10,7 @@ const saveSync = () => save(SYNC_LS, sync);
 
 const localDoc = () => ({
   history, deleted: meta.deleted, levels, levelsAt: meta.levelsAt,
-  settings: syncedSettings(), settingsAt: meta.settingsAt,
+  settings: syncedSettings(), settingsAt: meta.settingsAt, weights,
 });
 
 function mergeDocs(a, b) {
@@ -30,12 +30,14 @@ function mergeDocs(a, b) {
     history: [...byStart.values()].sort((x, y) => x.started - y.started),
     deleted, levels: levelsOut, levelsAt,
     settings: (sa >= sb ? a.settings : b.settings) || {}, settingsAt: Math.max(sa, sb),
+    weights: mergeWeights(a.weights, b.weights),
   };
 }
 
 /* Write a merged doc into local storage without re-triggering sync. */
 function applyDoc(d) {
   history = d.history; save(LS.hist, history);
+  weights = d.weights || {}; save(LS_WEIGHTS, weights);
   levels = d.levels; save(LS.lvl, levels);
   meta.levelsAt = d.levelsAt; meta.deleted = d.deleted; meta.settingsAt = d.settingsAt; saveMeta();
   SYNCED_SETTINGS.forEach(k => { if (k in d.settings) settings[k] = d.settings[k]; });

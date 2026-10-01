@@ -1,8 +1,9 @@
 /* Two simulated devices against the LIVE sync worker. Run: node _dev/test_sync.js
-   Creates a throwaway sync space; prints its id so it can be deleted afterwards. */
+   Creates a throwaway sync space and deletes ONLY that row when done (the table also holds his real data —
+   never clean up with an unscoped DELETE). */
 const fs = require("fs"), path = require("path"), vm = require("vm");
 const root = path.join(__dirname, "..");
-const FILES = ["js/data/plan.js", "js/data/cues.js", "js/data/videos.js", "js/core/util.js", "js/core/store.js", "js/core/planner.js", "js/core/sync.js"];
+const FILES = ["js/data/plan.js", "js/data/cues.js", "js/data/videos.js", "js/core/util.js", "js/core/store.js", "js/core/weights.js", "js/core/planner.js", "js/core/sync.js"];
 
 function device(seed = {}) {
   const ls = new Map(Object.entries(seed).map(([k, v]) => [k, JSON.stringify(v)]));
@@ -59,12 +60,23 @@ const h = (t, w = "A") => ({ workout: w, started: t, ended: t + 1, entries: [] }
   await phone("syncNow()"); await pc("syncNow()"); await phone("syncNow()");
   check(pc("history.length") === 1 && phone("history.length") === 1, "deletion propagates and doesn't resurrect");
 
+  // Weigh-ins from both devices merge; a deletion on one removes it on the other.
+  phone(`logWeight(80.4, Date.now() - 864e5)`); pc(`logWeight(80.1)`);
+  await phone("syncNow()"); await pc("syncNow()"); await phone("syncNow()");
+  check(pc("weightEntries().length") === 2 && phone("weightEntries().length") === 2, "weigh-ins from both devices merged");
+  pc(`deleteWeight(dayKey(Date.now() - 864e5))`);
+  await pc("syncNow()"); await phone("syncNow()");
+  check(phone("weightEntries().length") === 1, "weigh-in deletion propagates");
+
   // Unknown code is rejected cleanly.
   const bad = device({});
   let err = null; try { await bad(`joinSyncSpace("00000000000000000000")`); } catch (e) { err = e.message; }
   check(/No sync found/.test(err || ""), "unknown code → clear error");
 
   console.log(fails ? `${fails} FAILURES` : "ALL SYNC CHECKS PASS");
-  console.log("CLEANUP_ID=" + id);
+  if (!/^[0-9A-HJKMNP-TV-Z]{20}$/.test(id)) throw new Error("refusing to clean up: bad id " + id);
+  require("child_process").execSync(`npx wrangler d1 execute workout-sync --remote --command "DELETE FROM spaces WHERE id = '${id}'"`,
+    { cwd: path.join(root, "worker"), stdio: "ignore" });
+  console.log("cleaned up test space " + id);
   process.exit(fails ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });

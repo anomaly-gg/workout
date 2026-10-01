@@ -44,7 +44,9 @@ function renderProgress() {
   const body = $("#progress");
   if (!history.length) {
     body.innerHTML = `<div class="page-head"><div><h1 class="display">Progress</h1></div></div>
-      <div class="empty"><div class="display">Nothing yet.</div>Finish your first session and your graphs start here.</div>`;
+      <div class="empty"><div class="display">Nothing yet.</div>Finish your first session and your graphs start here.</div>
+      ${weightSectionHtml()}`;
+    wireWeightSection();
     return;
   }
   const reps = history.reduce((s, h) => s + sessionReps(h), 0);
@@ -91,5 +93,7 @@ function renderProgress() {
     </div>
 
     <div class="section-title"><h2>Strength trend</h2><span class="link">rungs + reps</span></div>
-    <div class="card trends">${rows || '<div class="muted">Log some sets to see trends.</div>'}</div>`;
+    <div class="card trends">${rows || '<div class="muted">Log some sets to see trends.</div>'}</div>
+    ${weightSectionHtml()}`;
+  wireWeightSection();
 }

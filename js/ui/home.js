@@ -144,6 +144,7 @@ function renderHome() {
   $("#sciBtn").onclick = openScience;
   if ($("#svOnboard")) $("#svOnboard").onclick = openSurvey;
   if ($("#fuelBtn")) $("#fuelBtn").onclick = openFuel;
+  if ($("#weighBtn")) $("#weighBtn").onclick = openWeightLog;
   if ($("#resumeBtn")) $("#resumeBtn").onclick = () => openSession();
   $$("[data-lvlup]").forEach(b => b.onclick = () => {
     const e = exDef(b.dataset.lvlup);
