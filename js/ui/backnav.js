@@ -1,9 +1,27 @@
-/* Android Back button. An installed web app closes as soon as there's no page history, so the app keeps one
-   guard entry: Back closes whatever is on top first, steps back through the survey, pauses (never quits) a
-   workout, returns to Home — and on Home asks for a second press within 2 s before letting the app close. */
-const BACK_EXIT_MS = 2000;
+/* Android Back button. An installed web app closes as soon as there's no page history left, so the app keeps
+   one history entry per open level of UI (a non-Home tab, a sheet, a video, a workout, a timer…) plus one guard
+   under Home. Back peels one level off; on Home the guard asks for a second press before the app closes.
+
+   Chrome skips history entries a page adds WITHOUT a user gesture when the person presses Back (anti-hijacking),
+   so entries are only added right after a real tap/key press (the same tap that opened the layer). Entries left
+   over when something closes by itself (a rest timer running out) are removed with a programmatic back. */
+let guards = 0;          // our history entries currently on the stack
+let ignorePops = 0;      // popstates we caused ourselves while trimming
 const isOpen = id => !$("#" + id).classList.contains("hidden");
-const armBack = () => window.history.pushState({ woGuard: true }, "");
+const LAYERS = ["vidOverlay", "sheet", "hold", "rest", "survey", "finish", "session"];
+
+/* How many entries the current UI should have: one guard + one per open level. */
+const levelsNeeded = () => 1 + (currentScreen !== "home" ? 1 : 0) + LAYERS.filter(isOpen).length;
+
+function syncGuards(hasGesture) {
+  const need = levelsNeeded();
+  if (guards > need) { ignorePops++; guards--; window.history.back(); return; }   // trim one stale entry
+  while (guards < need && hasGesture) { window.history.pushState({ woGuard: true }, ""); guards++; }   // one tap may restore several
+}
+// After the tap's own handlers have run (bubble phase), so a sheet it just opened is counted.
+// isTrusted: only real taps carry the gesture Chrome requires (our own .click() calls in handleBack don't).
+document.addEventListener("click", e => { if (e.isTrusted) syncGuards(true); });
+document.addEventListener("keyup", e => { if (e.isTrusted) syncGuards(true); });
 
 /* Undo one level of UI. Returns false when there's nothing left but Home. */
 function handleBack() {
@@ -23,10 +41,8 @@ function handleBack() {
 }
 
 window.addEventListener("popstate", () => {
-  if (handleBack()) return armBack();
-  // On Home: the guard is used up, so the NEXT Back really closes the app. Re-arm after 2 s.
-  toast("Press back again to exit", BACK_EXIT_MS);
-  setTimeout(() => { if (!(window.history.state && window.history.state.woGuard)) armBack(); }, BACK_EXIT_MS);
+  if (ignorePops > 0) { ignorePops--; return syncGuards(false); }
+  guards = Math.max(0, guards - 1);
+  if (!handleBack()) toast("Press back again to exit", 2500);
+  syncGuards(false);                        // trims if closing left a stale entry; can't add without a tap
 });
-
-armBack();
