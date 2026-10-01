@@ -31,6 +31,7 @@ function closeSession() {
   keepAwake(false);
   showLayer("session", false);
   applyUpdate();   // a new app version waits until the workout is over
+  scheduleSync();  // sync pauses during a workout
 }
 
 const curEx = () => PLAN[session.workout].exercises[session.idx];

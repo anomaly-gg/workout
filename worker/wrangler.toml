@@ -1,0 +1,8 @@
+name = "workout-sync"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "workout-sync"
+database_id = "0503c41a-6981-4289-b9bd-a2afec746311"

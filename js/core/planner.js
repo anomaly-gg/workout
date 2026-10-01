@@ -46,7 +46,7 @@ const firstRung = key => rungOk(key, 0) ? 0 : (stepRung(key, 0, 1) ?? 0);
 const lvlOf    = key => clamp(levels[key] ?? firstRung(key), 0, maxLvl(key));
 const nextRung = key => stepRung(key, lvlOf(key), 1);
 const prevRung = key => stepRung(key, lvlOf(key), -1);
-const setLevel = (key, idx) => { levels[key] = clamp(idx, 0, maxLvl(key)); save(LS.lvl, levels); };
+const setLevel = (key, idx) => saveLevel(key, clamp(idx, 0, maxLvl(key)));
 const curName  = key => exDef(key).levels[lvlOf(key)];
 const EQUIP_NAME = id => (EQUIPMENT.find(e => e.id === id) || { name: id }).name;
 const needLabel = need => need.split("|").map(EQUIP_NAME).join(" or ");

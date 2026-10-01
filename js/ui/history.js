@@ -38,7 +38,7 @@ function renderHistory() {
   });
   $$("#history [data-del]").forEach(b => b.onclick = async () => {
     if (!(await ask({ title: "Delete session?", body: "This removes it from your history and stats.", ok: "Delete", danger: true }))) return;
-    history.splice(+b.dataset.del, 1); saveHistory(); openHist = null;
+    deleteSession(+b.dataset.del); openHist = null;
     const y = scrollY; renderHistory(); scrollTo(0, y);
   });
 }

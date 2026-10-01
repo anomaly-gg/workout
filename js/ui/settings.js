@@ -5,6 +5,8 @@ function openSettings() {
     <h3>Settings</h3>
     ${installPrompt && !isInstalled() ? `<div class="set-row"><div class="lbl"><b>Install app</b><small>Home-screen icon, full screen, works offline</small></div>
       <button class="btn volt" id="instBtn" style="height:40px">Install</button></div>` : ""}
+    <div class="set-row"><div class="lbl"><b>Sync</b><small>${esc(syncStatusText())}</small></div>
+      <button class="btn ${sync.id ? "" : "volt"}" id="syOpen" style="height:40px">${sync.id ? "Manage" : "Set up"}</button></div>
     <div class="set-row"><div class="lbl"><b>Your plan</b><small>${settings.profile ? "Personalised " + new Date(settings.profile.at).toLocaleDateString() : "Not personalised yet"}</small></div>
       <button class="btn" id="svOpen" style="height:40px">${settings.profile ? "Retake survey" : "Take survey"}</button></div>
     <div class="set-row"><div class="lbl"><b>Weekly goal</b><small>Sessions per week — drives your streak</small></div>
@@ -30,6 +32,7 @@ function openSettings() {
       settings[b.dataset.sw] = !settings[b.dataset.sw]; saveSettings(); b.classList.toggle("on", settings[b.dataset.sw]);
     });
     if ($("#instBtn")) $("#instBtn").onclick = () => { closeSheet(); promptInstall(); };
+    $("#syOpen").onclick = () => { closeSheet(); openSync(); };
     $("#svOpen").onclick = () => { closeSheet(); openSurvey(); };
     $("#eqOpen").onclick = () => { closeSheet(); openEquipment(); };
     $("#expBtn").onclick = () => {

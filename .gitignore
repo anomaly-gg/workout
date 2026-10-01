@@ -1,3 +1,4 @@
 _backup/
 __pycache__/
 *.pyc
+.wrangler/
