@@ -9,8 +9,9 @@
 .w-entry { display: flex; align-items: center; gap: 10px; }
 .w-entry .icon-btn { width: 56px; height: 56px; border-radius: 16px; }
 .w-entry label { flex: 1; display: flex; align-items: baseline; justify-content: center; gap: 6px; height: 72px; border-radius: 18px;
-  background: var(--surface-2); border: 1px solid var(--line); padding-top: 10px; }
-.w-entry input { width: 140px; background: none; border: 0; text-align: right; font-family: var(--display); font-size: 44px; color: var(--text); padding: 0; -moz-appearance: textfield; }
+  background: var(--surface-2); border: 1px solid var(--line); padding-top: 14px; }
+.w-entry input { field-sizing: content; width: 4.2ch; min-width: 2ch; max-width: 6ch; background: none; border: 0; text-align: center;
+  font-family: var(--display); font-size: 44px; line-height: 1; color: var(--text); padding: 0; -moz-appearance: textfield; }
 .w-entry input:focus { outline: none; color: var(--volt); }
 .w-entry input::-webkit-outer-spin-button, .w-entry input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .w-entry label span { font-size: 14px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
