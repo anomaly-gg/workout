@@ -98,9 +98,9 @@ function renderReminders(msg = "", ok = false) {
   $("#remTime").onchange = e => { const [hh, mm] = e.target.value.split(":").map(Number); if (!isNaN(hh)) r.minute = hh * 60 + (mm || 0); };
   const busy = async (btn, fn, done) => {
     btn.disabled = true; btn.textContent = "Working…";
-    try { await fn(); renderReminders(done, true); } catch (e) { renderReminders(e.message); }
+    try { await fn(); renderReminders(typeof done === "function" ? done() : done, true); } catch (e) { renderReminders(e.message); }
   };
-  $("#remSave").onclick = e => busy(e.target, () => turnRemindersOn(r.days, r.minute), "Saved — " + reminderStatusText());
+  $("#remSave").onclick = e => busy(e.target, () => turnRemindersOn(r.days, r.minute), () => "Saved — " + reminderStatusText());
   if ($("#remTest")) $("#remTest").onclick = e => busy(e.target, async () => {
     saveReminderText();
     const sub = await pushSubscription(true);
