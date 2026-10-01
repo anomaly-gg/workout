@@ -15,7 +15,8 @@
   font-family: var(--display); font-size: 44px; line-height: 1; color: var(--text); padding: 0; -moz-appearance: textfield; }
 .w-entry input:focus { outline: none; color: var(--volt); }
 .w-entry input::-webkit-outer-spin-button, .w-entry input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.w-unit { font-size: 14px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+/* Fixed width, and an empty twin on the minus side, so the number box sits exactly in the middle. */
+.w-unit { flex: 0 0 24px; text-align: center; font-size: 14px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 .w-recent { margin-top: 18px; }
 .w-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
 .w-row span { flex: 1; color: var(--muted); }

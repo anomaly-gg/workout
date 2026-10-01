@@ -32,6 +32,7 @@ function renderWeightLog() {
     <p>Weigh in the morning, after the bathroom and before eating — same conditions every day. Single days bounce 1–2 kg; the 7-day average is what counts.</p>
     <div class="w-entry">
       <button class="icon-btn" data-w="-1" aria-label="Less">${ICON.minus}</button>
+      <span class="w-unit" aria-hidden="true"></span>
       <label><input type="number" inputmode="decimal" step="${step}" id="wInput" value="${wDraft.toFixed(1)}" aria-label="Weight in ${unit}"></label>
       <span class="w-unit">${unit}</span>
       <button class="icon-btn" data-w="1" aria-label="More">${ICON.plus}</button>
